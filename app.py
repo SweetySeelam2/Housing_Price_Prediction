@@ -292,8 +292,7 @@ elif page == "About & Credits":
     st.title("ℹ️ About & Credits")
     st.markdown("""
     **Built by Sweety Seelam** 
-    🔒 License & Usage:                         
-    Proprietary & All Rights Reserved                         
+    🔒 Proprietary & All Rights Reserved                         
     © 2025 Sweety Seelam.                 
     This work is proprietary and protected by copyright.
     No part of this project, app, code, or analysis may be copied, reproduced, distributed, or used for any purpose—commercial or otherwise—without explicit written permission from the author. 
