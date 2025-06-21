@@ -1,6 +1,11 @@
 
 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://housingprice-prediction.streamlit.app/)
 
+[![All Rights Reserved](https://img.shields.io/badge/Copyright-All%20Rights%20Reserved-red)](https://github.com/SweetySeelam2/Housing_Price_Prediction)
+
+> **All content, models, and code are fully copyrighted.  
+> No reuse, redistribution, or commercial use allowed without written permission.**
+
 ---
 
 # 🏠 Housing Price Prediction & Model Explainability App
