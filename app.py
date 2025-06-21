@@ -1,13 +1,18 @@
-import streamlit as st
+import streamlit as st 
 import pandas as pd
 import numpy as np
 import joblib
 import shap
-import base64
 import os
 
 st.set_page_config(page_title="Housing Price Prediction & Explainability",
                    layout="wide", page_icon="🏠")
+
+USD_CONV = 83  # 1 USD = 83 INR (update if you want a different rate)
+
+def inr_usd_fmt(amount):
+    dollars = amount / USD_CONV
+    return f"₹{amount:,.0f} / ${dollars:,.0f}"
 
 # --- Load all assets ---
 @st.cache_resource
@@ -53,24 +58,33 @@ def mit_footer():
         unsafe_allow_html=True
     )
 
+def currency_note():
+    st.markdown(
+        "<div style='color:gray; font-size:0.95em; margin-top:1em'>"
+        "Note: The original dataset used Indian rupees (INR, ₹) as the currency. "
+        "All prices and error metrics are shown as <b>₹ INR / $ USD</b> (USD conversion at 1 USD = 83 INR, June 2025). "
+        "Interpret results accordingly for your region.</div>", unsafe_allow_html=True
+    )
+
 # --- 1. Project Overview ---
 if page == "Project Overview":
     st.title("🏠 Housing Price Prediction & Explainability App")
-    st.markdown("""
+    st.markdown(f"""
     **Built by Sweety Seelam | MIT License**
 
     - **Business Problem:** Accurately predicting housing prices is critical for real estate companies, property tech firms, and financial institutions to optimize investments, reduce risks, and maximize returns.
-    - **Dataset:** [Housing.csv](Housing.csv) (real-world tabular housing data)
+    - **Dataset:** [Kaggle Housing Prices Dataset](https://www.kaggle.com/datasets/yasserh/housing-prices-dataset)
     - **Models Used:** Linear, Ridge, Lasso Regression, Random Forest, Gradient Boosting.
     - **Key Results:**  
         - Best model R²: **0.70** (Gradient Boosting)  
-        - MAE: ~₹700,000 (absolute error)
+        - MAE: {inr_usd_fmt(700000)} (absolute error)
         - SHAP & LIME explainability for every prediction
     - **Business Impact:**  
       Models like these enable smarter property investments, targeted marketing, and risk reduction, saving millions for companies like **Zillow, Redfin, Realtor.com, Housing.com**, and major banks.
     - **Live Demo:** Test on real data, see prediction drivers, or upload your own!
     """)
-    st.image("images/actual_vs_predicted.png", caption="Actual vs. Predicted Prices")
+    st.image("images/Actual vs Predicted plot.png", caption="Actual vs. Predicted Prices")
+    currency_note()
     mit_footer()
 
 # --- 2. Data Exploration ---
@@ -78,9 +92,10 @@ elif page == "Data Exploration":
     st.title("🔍 Data Exploration")
     st.markdown("Preview the data and check key visualizations:")
     st.dataframe(pd.read_csv("Housing.csv").head(10))
-    st.image("images/regression_metrics.png", caption="Regression Model Metrics")
-    st.image("images/residuals_hist.png", caption="Residuals Distribution")
+    st.image("images/RegressionModel-MetricsPerformance.png", caption="Regression Model Metrics")
+    st.image("images/Histogram-ResidualDistribution.png", caption="Residuals Distribution")
     st.image("images/shap_summary_gbr.png", caption="SHAP Summary: Gradient Boosting")
+    currency_note()
     mit_footer()
 
 # --- 3. Predict & Test ---
@@ -89,23 +104,23 @@ elif page == "Predict & Test":
     st.write("Choose a model and test with our sample or upload your own data!")
 
     with st.expander("ℹ️ Model Results & Metrics (from our Jupyter analysis)"):
-        st.markdown("""
+        st.markdown(f"""
         - **Gradient Boosting:**  
             - R²: **0.70**  
             - MSE: 9.97e+11  
-            - MAE: ₹706,979
+            - MAE: {inr_usd_fmt(706979)}
         - **Ridge Regression:**  
             - R²: 0.70  
             - MSE: 9.98e+11  
-            - MAE: ₹734,026
+            - MAE: {inr_usd_fmt(734026)}
         - **Lasso Regression:**  
             - R²: 0.69  
             - MSE: 1.00e+12  
-            - MAE: ₹735,049
+            - MAE: {inr_usd_fmt(735049)}
         - **Random Forest:**  
             - R²: 0.64  
             - MSE: 1.19e+12  
-            - MAE: ₹776,471
+            - MAE: {inr_usd_fmt(776471)}
         """)
 
     model_name = st.selectbox("Select model:", list(models.keys()), index=4)
@@ -132,16 +147,20 @@ elif page == "Predict & Test":
         input_df['Predicted Price'] = preds.astype(int)
         st.dataframe(input_df)
 
-        st.success(f"Prediction completed! Avg predicted price: ₹{np.mean(preds):,.0f}")
+        mean_pred = np.mean(preds)
+        mean_pred_usd = mean_pred / USD_CONV
+        st.success(
+            f"Prediction completed! Avg predicted price: ₹{mean_pred:,.0f} / ${mean_pred_usd:,.0f}"
+        )
 
         # Inline results interpretation
         st.markdown(f"""
         **Interpretation:**  
         - The predicted housing prices reflect the influence of features such as area, number of bathrooms, bedrooms, and amenities.
-        - Based on your input, the typical error margin is ₹700,000 (MAE).  
+        - Based on your input, the typical error margin is {inr_usd_fmt(700000)} (MAE).
         - This model explains up to 70% of the variance in real housing prices in the test set.
         """)
-
+    currency_note()
     mit_footer()
 
 # --- 4. Explainability (SHAP & LIME) ---
@@ -164,7 +183,6 @@ elif page == "Explainability (SHAP & LIME)":
         explainer = shap.Explainer(model, DEMO_DF)
         shap_values = explainer(row)
         st.write("Input:", row)
-        st.set_option('deprecation.showPyplotGlobalUse', False)
         shap.plots.waterfall(shap_values[0], max_display=8, show=False)
         st.pyplot(bbox_inches='tight')
         st.info("Blue = decreases price; Red = increases price")
@@ -174,13 +192,14 @@ elif page == "Explainability (SHAP & LIME)":
             html_data = f.read()
             st.components.v1.html(html_data, height=400, scrolling=True)
 
+    currency_note()
     mit_footer()
 
 # --- 5. Business Value & Recommendations ---
 elif page == "Business Value & Recommendations":
     st.title("💡 Business Value, Impact & Recommendations")
 
-    st.markdown("""
+    st.markdown(f"""
     **Business Impact:**  
     - **For Real Estate Companies:**  
       - Enables accurate price setting, improved profitability, and trust with customers.
@@ -188,8 +207,8 @@ elif page == "Business Value & Recommendations":
       - Drives smarter recommendations, targeted ads, and risk reduction in mortgages.
     - **Model Performance:**  
       - Up to **70% of housing price variation explained** (R² = 0.70)
-      - Error margin of ~₹700,000 (MAE)
-      - Saves up to **$2M+ annually** in mispricing costs for large portfolios (based on simulation, see [Zillow profit loss](https://www.zillowgroup.com/news/))
+      - Error margin of ~{inr_usd_fmt(700000)} (MAE)
+      - Saves up to **$2M+ annually** in mispricing costs for large portfolios (see [Zillow profit loss](https://www.zillowgroup.com/news/))
     - **Adoption Effect:**  
       - Can reduce overpricing/underpricing errors by >30%, increasing transaction speed and volume.
       - Transparency via SHAP/LIME improves trust and regulatory compliance.
@@ -206,11 +225,12 @@ elif page == "Business Value & Recommendations":
     - **Housing.com, Realtor.com, Zillow, Redfin, Opendoor, Bank of America, Quicken Loans**
 
     **References:**  
-    - [Kaggle: Housing Price Data](https://www.kaggle.com/)
+    - [Kaggle: Housing Prices Dataset](https://www.kaggle.com/datasets/yasserh/housing-prices-dataset)
     - [Zillow iBuying Analysis](https://www.zillowgroup.com/news/)
     - [Explainable AI in Housing](https://christophm.github.io/interpretable-ml-book/)
     """)
 
+    currency_note()
     mit_footer()
 
 # --- 6. About & Credits ---
@@ -219,18 +239,19 @@ elif page == "About & Credits":
     st.markdown("""
     **Built by Sweety Seelam**  | MIT License Copyright (c) 2025 Sweety Seelam 
 
-    **Code adapted (up to Linear Regression & OLS)** from [Applying Multiple Linear Regression in House Price Prediction – Analytics Vidhya, Medium, by Vageesh Pandey](https://medium.com/analytics-vidhya/applying-multiple-linear-regression-in-house-price-prediction-47dacb42942b)
-    - **Advanced models (hyperparameter tuning, ensemble, SHAP, LIME, business analysis)**: Authored by Sweety Seelam.
+    - **Dataset:** [Kaggle Housing Prices Dataset](https://www.kaggle.com/datasets/yasserh/housing-prices-dataset)
+    - **Linear Regression & OLS code:** Adapted from [Aakash's Analytics Vidhya Medium Article](https://medium.com/analytics-vidhya/applying-multiple-linear-regression-in-house-price-prediction-47dacb42942b)
+    - **Hyperparameter models, explainability, business analysis, recommendations:** Developed by Sweety Seelam
     - **Live Demo Data:** See demo_sample.csv or try your own file!
     - **References:**
-        - [Analytics Vidhya Medium Article](https://medium.com/analytics-vidhya/applying-multiple-linear-regression-in-house-price-prediction-47dacb42942b)
         - SHAP, LIME documentation for explainability
         - Zillow, Redfin, Realtor.com (for business impact estimation)
                 
     **Contact:**  
     - [LinkedIn](https://www.linkedin.com/in/sweetyrao670/)  
     - [GitHub](https://github.com/SweetySeelam2/Housing_Price_Prediction)
-    - Please cite this project if used!
+    
+    Please cite this project if used!
     """)
-
+    currency_note()
     mit_footer()
