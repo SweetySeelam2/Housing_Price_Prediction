@@ -192,5 +192,5 @@ Interpretable Machine Learning Book (SHAP & LIME)
 ## 🔒 Proprietary & All Rights Reserved
 © 2025 Sweety Seelam. This work is proprietary and protected by copyright. No part of this project, app, code, or analysis may be copied, reproduced, distributed, or used for any purpose—commercial or otherwise—without explicit written permission from the author.
 
-For licensing, commercial use, or collaboration inquiries, please contact: 
+For licensing, commercial use, or collaboration inquiries, please contact:                                                               
 LinkedIn: https://www.linkedin.com/in/sweetyrao670/ | Email: sweetyseelam2@gmail.com
