@@ -82,7 +82,7 @@ if page == "Project Overview":
 
     - **Business Problem:** Accurately predicting housing prices is critical for real estate companies, property tech firms, and financial institutions to optimize investments, reduce risks, and maximize returns.
     - **Dataset:** [Kaggle Housing Prices Dataset](https://www.kaggle.com/datasets/yasserh/housing-prices-dataset)
-    - **Models Used:** Linear, Ridge, Lasso Regression, Random Forest, Gradient Boosting.
+    - **Models Used:** Linear Regression, Ridge Regression, Lasso Regression, Random Forest, Gradient Boosting.
     - **Key Results:**  
         - Best model R²: **0.70** (Gradient Boosting)  
         - MAE: {inr_usd_fmt(700000)} (absolute error)
@@ -110,6 +110,7 @@ elif page == "Data Exploration":
     st.image("images/RegressionModel-MetricsPerformance.png", caption="Regression Model Metrics")
     st.markdown("""
     <b>Interpretation:</b><br>
+    - MSE & R2 scores are shown for the baseline Linear Regression model which is 
     - See R², MAE, and MSE for each model (on test set).<br>
     - **Gradient Boosting** gives the lowest error and highest R².<br>
     - Error is measured in ₹/$. Higher R² means better prediction.
@@ -136,14 +137,32 @@ elif page == "Predict & Test":
     st.title("🏠 Predict Housing Price")
     st.write("Choose a model and test with our sample or upload your own data!")
 
+    MODEL_INTERPRETATION = {
+        "Gradient Boosting": (
+            "This is the most accurate model, capturing complex relationships and minimizing error—ideal for business-critical pricing."
+        ),
+        "Ridge Regression": (
+            "Very close to Gradient Boosting; robust to overfitting but slightly higher error. Suits linear patterns with small non-linearities."
+        ),
+        "Lasso Regression": (
+            "Provides a simple, interpretable model that highlights key features, though with marginally higher error. Good for feature selection."
+        ),
+        "Random Forest": (
+            "Captures non-linear patterns but is less accurate than Gradient Boosting. Useful for quick, robust baseline predictions."
+        ),
+    }
+
     with st.expander("ℹ️ Model Results & Metrics (from our Jupyter analysis)"):
         for name in ["Gradient Boosting", "Ridge Regression", "Lasso Regression", "Random Forest"]:
             m = MODEL_METRICS[name]
             st.markdown(
-                f"- **{name}:**  \n"
-                f"    - R²: **{m['r2']:.2f}**  \n"
-                f"    - MSE: {m['mse']:.2e}  \n"
-                f"    - MAE: {inr_usd_fmt(m['mae'])}"
+                f"""
+                - **{name}:**
+                    - R²: **{m['r2']:.2f}**
+                    - MSE: {m['mse']:.2e}
+                    - MAE: {inr_usd_fmt(m['mae'])}
+                    - *Interpretation:* {MODEL_INTERPRETATION[name]}
+                """
             )
 
     model_name = st.selectbox("Select model:", list(models.keys()), index=4)
@@ -205,9 +224,9 @@ elif page == "Explainability (SHAP & LIME)":
         explainer = shap.Explainer(model, DEMO_DF)
         shap_values = explainer(row)
         st.write("Input:", row)
-        fig, ax = plt.subplots()
-        shap.plots.waterfall(shap_values[0], max_display=8, show=False, ax=ax)
-        st.pyplot(fig)
+        plt.close('all')  # Prevents plot stacking
+        shap.plots.waterfall(shap_values[0], max_display=8, show=False)
+        st.pyplot(plt.gcf())  # Display current figure
         st.info("Blue = decreases price; Red = increases price")
         st.markdown("""
         <b>Interpretation:</b><br>
