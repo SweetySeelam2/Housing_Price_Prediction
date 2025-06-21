@@ -174,6 +174,10 @@ Adapted from [Aakash's Analytics Vidhya Medium Article](https://medium.com/analy
 **Explainability:**                                              
 Interpretable Machine Learning Book (SHAP & LIME)
 
+***Note:***
+- All price values are displayed as ₹INR / $USD (at 1 USD = 83 INR, June 2025).
+- This project is designed for research, business simulation, and professional demonstration.
+
 ---
 
 ## 👩‍💻 Author:                               
@@ -189,7 +193,3 @@ Interpretable Machine Learning Book (SHAP & LIME)
 © 2025 Sweety Seelam. This work is proprietary and protected by copyright. No part of this project, app, code, or analysis may be copied, reproduced, distributed, or used for any purpose—commercial or otherwise—without explicit written permission from the author.
 
 For licensing, commercial use, or collaboration inquiries, please contact: LinkedIn | Email: sweetyseelam2@gmail.com
-
-***Note:***
-- All price values are displayed as ₹INR / $USD (at 1 USD = 83 INR, June 2025).
-- This project is designed for research, business simulation, and professional demonstration.
