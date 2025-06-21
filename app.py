@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 st.set_page_config(page_title="Housing Price Prediction & Explainability",
                    layout="wide", page_icon="🏠")
 
-USD_CONV = 83  # 1 USD = 83 INR
+USD_CONV = 83  # CURRENCY: 1 USD = 83 INR
 
 def inr_usd_fmt(amount):
     dollars = amount / USD_CONV
@@ -109,10 +109,12 @@ elif page == "Data Exploration":
     st.dataframe(pd.read_csv("Housing.csv").head(10))
     st.image("images/RegressionModel-MetricsPerformance.png", caption="Regression Model Metrics")
     st.markdown("""
-    <b>Interpretation:</b><br>
-    - MSE & R2 scores are shown for the baseline Linear Regression model which is 
-    - See R², MAE, and MSE for each model (on test set).<br>
-    - **Gradient Boosting** gives the lowest error and highest R².<br>
+    <b>Interpretation (Linear Regression):</b><br>
+    - Linear Regression serves as the baseline model.<br>
+    - Captures overall trends but not complex non-linear effects.<br>
+    - Shows higher error (MAE, MSE) and lower R² than advanced models.<br>
+    - Best used for quick, interpretable estimates or as a benchmark.<br>
+    - For business use, ensemble models (like Gradient Boosting) are preferred for higher accuracy and lower risk.
     - Error is measured in ₹/$. Higher R² means better prediction.
     """, unsafe_allow_html=True)
     st.image("images/Histogram-ResidualDistribution.png", caption="Residuals Distribution")
@@ -152,7 +154,7 @@ elif page == "Predict & Test":
         ),
     }
 
-    with st.expander("ℹ️ Model Results & Metrics (from our Jupyter analysis)"):
+    with st.expander("ℹ️ Model Results & Metrics (from the project's Jupyter analysis)"):
         for name in ["Gradient Boosting", "Ridge Regression", "Lasso Regression", "Random Forest"]:
             m = MODEL_METRICS[name]
             st.markdown(
@@ -250,36 +252,35 @@ elif page == "Explainability (SHAP & LIME)":
 elif page == "Business Value & Recommendations":
     st.title("💡 Business Value, Impact & Recommendations")
     st.markdown(f"""
-    **Business Impact:**  
-    - **For Real Estate Companies:**  
-      - Enables accurate price setting, improved profitability, and trust with customers.
-    - **For Portals/FinTechs (e.g., Housing.com, Realtor.com, Zillow):**  
-      - Drives smarter recommendations, targeted ads, and risk reduction in mortgages.
-    - **Model Performance:**  
-      - Up to **70% of housing price variation explained** (R² = 0.70)
-      - Error margin of ~{inr_usd_fmt(700000)} (MAE)
-      - Saves up to **$2M+ annually** in mispricing costs for large portfolios (see [Zillow iBuyer Loss](https://www.cnbc.com/2022/02/10/zillow-lost-881-million-in-2021-winding-down-its-ibuying-business.html))
-    - **Adoption Effect:**  
-      - Can reduce overpricing/underpricing errors by >30%, increasing transaction speed and volume.
-      - Transparency via SHAP/LIME improves trust and regulatory compliance.
+**Business Impact:**  
+- **For Real Estate Companies:**  
+    - Enables accurate price setting, improved profitability, and trust with customers.
+- **For Portals/FinTechs (e.g., Housing.com, Realtor.com, Zillow):**  
+    - Drives smarter recommendations, targeted ads, and risk reduction in mortgages.
+- **Model Performance:**  
+    - Up to **70% of housing price variation explained** (R² = 0.70)
+    - Error margin of ~{inr_usd_fmt(700000)} (MAE)
+    - Can help save millions annually in mispricing costs for large portfolios (see [Zillow Group News](https://investors.zillowgroup.com/investors/news-and-events/news/default.aspx) for industry trends)
+- **Adoption Effect:**  
+    - Can reduce overpricing/underpricing errors by >30%, increasing transaction speed and volume.
+    - Transparency via SHAP/LIME improves trust and regulatory compliance.
 
-    **Recommendations:**  
-    - Deploy this model for:
-        - Automated pricing on listings
-        - Portfolio valuation for banks/investors
-        - Customer-facing price calculators
-    - Combine with external factors (location scores, market trends) for even higher accuracy.
-    - Integrate explainability for transparency with stakeholders.
+**Recommendations:**  
+- Deploy this model for:
+    - Automated pricing on listings
+    - Portfolio valuation for banks/investors
+    - Customer-facing price calculators
+- Combine with external factors (location scores, market trends) for even higher accuracy.
+- Integrate explainability for transparency with stakeholders.
 
-    **Relevant Companies:**  
-    - **Housing.com, Realtor.com, Zillow, Redfin, Opendoor, Bank of America, Quicken Loans**
+**Relevant Companies:**  
+- **Housing.com, Realtor.com, Zillow, Redfin, Opendoor, Bank of America, Quicken Loans**
 
-    **References:**  
-    - [Kaggle: Housing Prices Dataset](https://www.kaggle.com/datasets/yasserh/housing-prices-dataset)
-    - [Zillow iBuying Analysis (CNBC)](https://www.cnbc.com/2022/02/10/zillow-lost-881-million-in-2021-winding-down-its-ibuying-business.html)
-    - [Zillow Group Official Report](https://investors.zillowgroup.com/news-and-events/news/news-details/2022/Zillow-Group-Reports-Fourth-Quarter-and-Full-Year-2021-Results/default.aspx)
-    - [Explainable AI in Housing](https://christophm.github.io/interpretable-ml-book/)
-    """)
+**References:**  
+- [Kaggle: Housing Prices Dataset](https://www.kaggle.com/datasets/yasserh/housing-prices-dataset)
+- [Zillow Group News](https://investors.zillowgroup.com/investors/news-and-events/news/default.aspx)
+- [Explainable AI in Housing](https://christophm.github.io/interpretable-ml-book/)
+""")
     currency_note()
     mit_footer()
 
