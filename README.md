@@ -14,10 +14,14 @@
 Housing price prediction is a critical real-world problem for real estate, banking, fintech, and proptech sectors.  
 This application enables you to **predict house prices** using advanced machine learning models, visualize model performance, and understand predictions via SHAP and LIME explainability.
 
-- **Business Problem:**  
+---
+
+## **Business Problem:**  
   Accurate price estimation enables smarter investments, transparent lending, risk reduction, and optimized sales for platforms like Housing.com, Realtor.com, Zillow, Redfin, and major banks.
 
-- **Key Features:**  
+---
+
+## **Key Features:**  
   - Large-scale regression models: Linear, Ridge, Lasso, Random Forest, Gradient Boosting (all trained & tuned).
   - Upload your own data or test on a live demo sample.
   - **Model Explainability:** See why each prediction is made using SHAP & LIME.
@@ -82,7 +86,7 @@ All results are **from your final Jupyter analysis and used in the deployed app*
   - LIME HTML visualization for human-interpretability.
 - **Business Value Module:**  
   - ROI simulation, business case studies, and actionable recommendations for real estate companies and banks.
-  - Direct citations and links to [Zillow’s business impact](https://www.zillowgroup.com/news/).
+  - see [Zillow Group News](https://investors.zillowgroup.com/investors/news-and-events/news/default.aspx) for industry trends.
 - **Universal Currency Support:**  
   - All outputs shown as `₹INR / $USD`, so global users can interpret immediately.
   - Note on currency shown at bottom of each page for transparency.
@@ -114,25 +118,25 @@ All results are **from your final Jupyter analysis and used in the deployed app*
 
 ## 🏗️ Project Structure
 
-├── app.py
-├── README.md
-├── requirements.txt
-├── Housing_LinearReg_Gradient.ipynb
-├── Housing.csv
-├── demo_sample.csv
-├── feature_scaler.pkl
-├── feature_names.npy
-├── linear_regression_model.pkl
-├── ridge_regression_model.pkl
-├── lasso_regression_model.pkl
-├── random_forest_model.pkl
-├── gradient_boosting_model.pkl
-├── lime_rf_example.html
-├── images/
-│ ├── Actual vs Predicted plot.png
-│ ├── RegressionModel-MetricsPerformance.png
-│ ├── Histogram-ResidualDistribution.png
-│ ├── shap_summary_gbr.png
+├── app.py                                                                       
+├── README.md                                                                                         
+├── requirements.txt                                                                                            
+├── Housing_LinearReg_Gradient.ipynb                                                                                     
+├── Housing.csv                                                                                                
+├── demo_sample.csv                                                                                            
+├── feature_scaler.pkl                                                                                                        
+├── feature_names.npy                                                                                                  
+├── linear_regression_model.pkl                                                        
+├── ridge_regression_model.pkl                                                                            
+├── lasso_regression_model.pkl                                                                         
+├── random_forest_model.pkl                                                                             
+├── gradient_boosting_model.pkl                                                                                     
+├── lime_rf_example.html                                                                                    
+├── images/                                                                                                
+│ ├── Actual vs Predicted plot.png                                                                                  
+│ ├── RegressionModel-MetricsPerformance.png                                                                            
+│ ├── Histogram-ResidualDistribution.png                                                                             
+│ ├── shap_summary_gbr.png                                                     
 
 ---
 
@@ -152,15 +156,7 @@ streamlit run app.py
 
 ---
 
-# 🚀 Try the Live App
-
-👉 **[Open the Housing Price Prediction App in your browser (Streamlit Cloud)](https://housingprice-prediction.streamlit.app/)**
-
-No installation required. Instantly predict, explain, and explore housing prices with real data and modern ML models!
-
----
-
-# 📚 References & Credits
+## 📚 References & Credits
 **Dataset:**                                
 [Kaggle: Housing Prices Dataset](https://www.kaggle.com/datasets/yasserh/housing-prices-dataset)
 
@@ -168,14 +164,14 @@ No installation required. Instantly predict, explain, and explore housing prices
 Adapted from [Aakash's Analytics Vidhya Medium Article](https://medium.com/analytics-vidhya/applying-multiple-linear-regression-in-house-price-prediction-47dacb42942b)
 
 **Business Impact:**                                 
-[Zillow iBuying Analysis](https://www.zillowgroup.com/news/)
+[Zillow Group News](https://investors.zillowgroup.com/investors/news-and-events/news/default.aspx)
 
 **Explainability:**                                              
 Interpretable Machine Learning Book (SHAP & LIME)
 
 ---
 
-# Author:                               
+## Author:                               
 **Sweety Seelam** | Business Analyst | Aspiring Data Scientist                                         
 [LinkedIn](https://www.linkedin.com/in/sweetyrao670/)                                     
 [GitHub](https://github.com/SweetySeelam2/Housing_Price_Prediction)                                                            
@@ -183,7 +179,7 @@ Interpretable Machine Learning Book (SHAP & LIME)
 
 ---
 
-# 🔒 License
+## 🔒 License
 MIT License © 2025 Sweety Seelam
 
 ***Note:***
