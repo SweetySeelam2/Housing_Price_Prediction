@@ -276,13 +276,6 @@ elif page == "Business Value & Recommendations":
 
 **Relevant Companies:**  
 - **Housing.com, Realtor.com, Zillow, Redfin, Opendoor, Bank of America, Quicken Loans**
-
-**References:**  
-- [Housing Prices Dataset – Kaggle](https://www.kaggle.com/datasets/yasserh/housing-prices-dataset)
-- [Zillow’s Shuttered Home-Flipping Business – WSJ, 2022](https://www.wsj.com/business/earnings/zillows-shuttered-home-flipping-business-lost-881-million-in-2021-11644529656)
-- [Zillow Group News – Industry Trends (2025)](https://investors.zillowgroup.com/investors/news-and-events/news/default.aspx)
-- [Interpretable Machine Learning Book (SHAP & LIME, Regulatory Trends, 2024)](https://christophm.github.io/interpretable-ml-book/)
-- [Analytics Vidhya – Linear Regression Code](https://medium.com/analytics-vidhya/applying-multiple-linear-regression-in-house-price-prediction-47dacb42942b)
 """)
     currency_note()
     footer()
@@ -292,18 +285,19 @@ elif page == "About & Credits":
     st.title("ℹ️ About & Credits")
     st.markdown("""
     **Built by Sweety Seelam** 
+    
     🔒 Proprietary & All Rights Reserved                         
     © 2025 Sweety Seelam.                 
     This work is proprietary and protected by copyright.
     No part of this project, app, code, or analysis may be copied, reproduced, distributed, or used for any purpose—commercial or otherwise—without explicit written permission from the author. 
-
-    - **Dataset:** [Kaggle Housing Prices Dataset](https://www.kaggle.com/datasets/yasserh/housing-prices-dataset)
-    - **Linear Regression & OLS code:** Adapted from [Aakash's Analytics Vidhya Medium Article](https://medium.com/analytics-vidhya/applying-multiple-linear-regression-in-house-price-prediction-47dacb42942b)
+    
+    **References:**  
+    - **Dataset:** [Housing Prices Dataset – Kaggle](https://www.kaggle.com/datasets/yasserh/housing-prices-dataset)
+    - **Linear Regression & OLS code:** Adapted from [Antony Christopher's] [Analytics Vidhya – Linear Regression Code](https://medium.com/analytics-vidhya/applying-multiple-linear-regression-in-house-price-prediction-47dacb42942b)
     - **Hyperparameter models, explainability, business analysis, recommendations:** Developed by Sweety Seelam
-    - **Live Demo Data:** See demo_sample.csv or try your own file!
-    - **References:**
-        - SHAP, LIME documentation for explainability
-        - Zillow, Redfin, Realtor.com (for business impact estimation)
+    - **Business impact estimation:** [Zillow’s Shuttered Home-Flipping Business – WSJ, 2022](https://www.wsj.com/business/earnings/zillows-shuttered-home-flipping-business-lost-881-million-in-2021-11644529656)
+    - **Industry Trends:**[Zillow Group News – Industry Trends (2025)](https://investors.zillowgroup.com/investors/news-and-events/news/default.aspx)
+    - **Interpretable Machine Learning:** [Interpretable Machine Learning Book (SHAP & LIME, Regulatory Trends, 2024)](https://christophm.github.io/interpretable-ml-book/)
                 
     **Contact:**  
     - [LinkedIn](https://www.linkedin.com/in/sweetyrao670/)  
