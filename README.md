@@ -175,14 +175,16 @@ Interpretable Machine Learning Book (SHAP & LIME)
 **Sweety Seelam** | Business Analyst | Aspiring Data Scientist                                         
 [LinkedIn](https://www.linkedin.com/in/sweetyrao670/)                                     
 [GitHub](https://github.com/SweetySeelam2/Housing_Price_Prediction)                                                            
-[Portfolio](https://sweetyseelam2.github.io/SweetySeelam.github.io/)                    
+[Portfolio](https://sweetyseelam2.github.io/SweetySeelam.github.io/)
+[Email](sweetyseelam2@gmail.com)                    
 
 ---
 
-## 🔒 License
-MIT License © 2025 Sweety Seelam
+## 🔒 Proprietary & All Rights Reserved
+© 2025 Sweety Seelam. This work is proprietary and protected by copyright. No part of this project, app, code, or analysis may be copied, reproduced, distributed, or used for any purpose—commercial or otherwise—without explicit written permission from the author.
+
+For licensing, commercial use, or collaboration inquiries, please contact: LinkedIn | Email: sweetyseelam2@gmail.com
 
 ***Note:***
 - All price values are displayed as ₹INR / $USD (at 1 USD = 83 INR, June 2025).
 - This project is designed for research, business simulation, and professional demonstration.
-- Please cite all sources and the author if used in your work or product.

@@ -68,9 +68,9 @@ page = st.sidebar.radio("Go to:", [
     "About & Credits"
 ])
 
-def mit_footer():
+def footer():
     st.markdown(
-        "<hr><span style='font-size:0.85em'>MIT © 2025 Sweety Seelam</span>",
+        "<hr> <span style='font-size:0.85em'> Proprietary &copy; 2025 Sweety Seelam – All Rights Reserved. </span>",
         unsafe_allow_html=True
     )
 
@@ -78,7 +78,7 @@ def mit_footer():
 if page == "Project Overview":
     st.title("🏠 Housing Price Prediction & Explainability App")
     st.markdown(f"""
-    **Built by Sweety Seelam | MIT License**
+    **Built by Sweety Seelam**
 
     - **Business Problem:** Accurately predicting housing prices is critical for real estate companies, property tech firms, and financial institutions to optimize investments, reduce risks, and maximize returns.
     - **Dataset:** [Kaggle Housing Prices Dataset](https://www.kaggle.com/datasets/yasserh/housing-prices-dataset)
@@ -100,7 +100,7 @@ if page == "Project Overview":
     - Some spread at high prices indicates a typical MAE of about {mae} (see next pages for full metrics).
     """.format(mae=inr_usd_fmt(700000)), unsafe_allow_html=True)
     currency_note()
-    mit_footer()
+    footer()
 
 # --- 2. Data Exploration ---
 elif page == "Data Exploration":
@@ -132,7 +132,7 @@ elif page == "Data Exploration":
     - Larger values on right have strongest effect on raising predicted price.
     """, unsafe_allow_html=True)
     currency_note()
-    mit_footer()
+    footer()
 
 # --- 3. Predict & Test ---
 elif page == "Predict & Test":
@@ -205,7 +205,7 @@ elif page == "Predict & Test":
         - This model explains up to {metrics['r2']:.0%} of the variance in housing prices in the test set.
         """)
     currency_note()
-    mit_footer()
+    footer()
 
 # --- 4. Explainability (SHAP & LIME) ---
 elif page == "Explainability (SHAP & LIME)":
@@ -246,7 +246,7 @@ elif page == "Explainability (SHAP & LIME)":
         - Useful for showing which features increase or decrease the prediction in plain English.<br>
         """, unsafe_allow_html=True)
     currency_note()
-    mit_footer()
+    footer()
 
 # --- 5. Business Value & Recommendations ---
 elif page == "Business Value & Recommendations":
@@ -260,6 +260,7 @@ elif page == "Business Value & Recommendations":
 - **Model Performance:**  
     - Up to **70% of housing price variation explained** (R² = 0.70)
     - Error margin of ~{inr_usd_fmt(700000)} (MAE)
+    - Real-world iBuying losses like Zillow’s $881M underscore the need for advanced, explainable ML to avoid costly business failures and regulatory penalties [Zillow’s Shuttered Home-Flipping Business](https://www.wsj.com/business/earnings/zillows-shuttered-home-flipping-business-lost-881-million-in-2021-11644529656)
     - Can help save millions annually in mispricing costs for large portfolios (see [Zillow Group News](https://investors.zillowgroup.com/investors/news-and-events/news/default.aspx) for industry trends)
 - **Adoption Effect:**  
     - Can reduce overpricing/underpricing errors by >30%, increasing transaction speed and volume.
@@ -277,18 +278,25 @@ elif page == "Business Value & Recommendations":
 - **Housing.com, Realtor.com, Zillow, Redfin, Opendoor, Bank of America, Quicken Loans**
 
 **References:**  
-- [Kaggle: Housing Prices Dataset](https://www.kaggle.com/datasets/yasserh/housing-prices-dataset)
-- [Zillow Group News](https://investors.zillowgroup.com/investors/news-and-events/news/default.aspx)
-- [Explainable AI in Housing](https://christophm.github.io/interpretable-ml-book/)
+- [Housing Prices Dataset – Kaggle](https://www.kaggle.com/datasets/yasserh/housing-prices-dataset)
+- [Zillow’s Shuttered Home-Flipping Business – WSJ, 2022](https://www.wsj.com/business/earnings/zillows-shuttered-home-flipping-business-lost-881-million-in-2021-11644529656)
+- [Zillow Group News – Industry Trends (2025)](https://investors.zillowgroup.com/investors/news-and-events/news/default.aspx)
+- [Interpretable Machine Learning Book (SHAP & LIME, Regulatory Trends, 2024)](https://christophm.github.io/interpretable-ml-book/)
+- [Analytics Vidhya – Linear Regression Code](https://medium.com/analytics-vidhya/applying-multiple-linear-regression-in-house-price-prediction-47dacb42942b)
 """)
     currency_note()
-    mit_footer()
+    footer()
 
 # --- 6. About & Credits ---
 elif page == "About & Credits":
     st.title("ℹ️ About & Credits")
     st.markdown("""
-    **Built by Sweety Seelam**  | MIT License Copyright (c) 2025 Sweety Seelam 
+    **Built by Sweety Seelam** 
+    🔒 License & Usage:                         
+    Proprietary & All Rights Reserved                         
+    © 2025 Sweety Seelam.                 
+    This work is proprietary and protected by copyright.
+    No part of this project, app, code, or analysis may be copied, reproduced, distributed, or used for any purpose—commercial or otherwise—without explicit written permission from the author. 
 
     - **Dataset:** [Kaggle Housing Prices Dataset](https://www.kaggle.com/datasets/yasserh/housing-prices-dataset)
     - **Linear Regression & OLS code:** Adapted from [Aakash's Analytics Vidhya Medium Article](https://medium.com/analytics-vidhya/applying-multiple-linear-regression-in-house-price-prediction-47dacb42942b)
@@ -301,8 +309,7 @@ elif page == "About & Credits":
     **Contact:**  
     - [LinkedIn](https://www.linkedin.com/in/sweetyrao670/)  
     - [GitHub](https://github.com/SweetySeelam2/Housing_Price_Prediction)
-    
-    Please cite this project if used!
+    - [Email](sweetyseelam2@gmail.com)
     """)
     currency_note()
-    mit_footer()
+    footer()
