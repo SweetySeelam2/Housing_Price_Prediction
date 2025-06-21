@@ -16,12 +16,12 @@ This application enables you to **predict house prices** using advanced machine 
 
 ---
 
-## **Business Problem:**  
+## 💼 **Business Problem:**  
   Accurate price estimation enables smarter investments, transparent lending, risk reduction, and optimized sales for platforms like Housing.com, Realtor.com, Zillow, Redfin, and major banks.
 
 ---
 
-## **Key Features:**  
+## ✨ **Key Features:**  
   - Large-scale regression models: Linear, Ridge, Lasso, Random Forest, Gradient Boosting (all trained & tuned).
   - Upload your own data or test on a live demo sample.
   - **Model Explainability:** See why each prediction is made using SHAP & LIME.
@@ -171,7 +171,7 @@ Interpretable Machine Learning Book (SHAP & LIME)
 
 ---
 
-## Author:                               
+## 👩‍💻 Author:                               
 **Sweety Seelam** | Business Analyst | Aspiring Data Scientist                                         
 [LinkedIn](https://www.linkedin.com/in/sweetyrao670/)                                     
 [GitHub](https://github.com/SweetySeelam2/Housing_Price_Prediction)                                                            
