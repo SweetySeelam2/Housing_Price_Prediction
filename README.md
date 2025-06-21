@@ -98,9 +98,9 @@ All results are **from your final Jupyter analysis and used in the deployed app*
 
 ---
 
-## 🌐 How to Use
-
-1. **Open the App:**  
+## 🚀 Try the Live App - How to Use?
+                                                                  
+1. **Open the App:**                                                   
    [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://housingprice-prediction.streamlit.app/)
 2. **Explore the Data:**  
    See the dataset sample and core visuals on the "Data Exploration" page.
