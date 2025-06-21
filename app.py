@@ -1,20 +1,28 @@
-import streamlit as st 
+import streamlit as st
 import pandas as pd
 import numpy as np
 import joblib
 import shap
 import os
+import matplotlib.pyplot as plt
 
 st.set_page_config(page_title="Housing Price Prediction & Explainability",
                    layout="wide", page_icon="🏠")
 
-USD_CONV = 83  # 1 USD = 83 INR (update if you want a different rate)
+USD_CONV = 83  # 1 USD = 83 INR
 
 def inr_usd_fmt(amount):
     dollars = amount / USD_CONV
     return f"₹{amount:,.0f} / ${dollars:,.0f}"
 
-# --- Load all assets ---
+def currency_note():
+    st.markdown(
+        "<div style='color:gray; font-size:0.95em; margin-top:1em'>"
+        "Note: The original dataset used Indian rupees (INR, ₹) as the currency. "
+        "All prices and error metrics are shown as <b>₹ INR / $ USD</b> (USD conversion at 1 USD = 83 INR, June 2025). "
+        "Interpret results accordingly for your region.</div>", unsafe_allow_html=True
+    )
+
 @st.cache_resource
 def load_artifacts():
     models = {
@@ -29,6 +37,14 @@ def load_artifacts():
     return models, scaler, feature_names
 
 models, scaler, feature_names = load_artifacts()
+
+MODEL_METRICS = {
+    "Gradient Boosting": {"r2": 0.70, "mae": 706979, "mse": 9.97e11},
+    "Ridge Regression":  {"r2": 0.70, "mae": 734026, "mse": 9.98e11},
+    "Lasso Regression":  {"r2": 0.69, "mae": 735049, "mse": 1.00e12},
+    "Random Forest":     {"r2": 0.64, "mae": 776471, "mse": 1.19e12},
+    "Linear Regression": {"r2": 0.62, "mae": 787090, "mse": 1.22e12},
+}
 
 # --- Demo data ---
 DEMO_PATH = 'demo_sample.csv'
@@ -58,14 +74,6 @@ def mit_footer():
         unsafe_allow_html=True
     )
 
-def currency_note():
-    st.markdown(
-        "<div style='color:gray; font-size:0.95em; margin-top:1em'>"
-        "Note: The original dataset used Indian rupees (INR, ₹) as the currency. "
-        "All prices and error metrics are shown as <b>₹ INR / $ USD</b> (USD conversion at 1 USD = 83 INR, June 2025). "
-        "Interpret results accordingly for your region.</div>", unsafe_allow_html=True
-    )
-
 # --- 1. Project Overview ---
 if page == "Project Overview":
     st.title("🏠 Housing Price Prediction & Explainability App")
@@ -84,6 +92,13 @@ if page == "Project Overview":
     - **Live Demo:** Test on real data, see prediction drivers, or upload your own!
     """)
     st.image("images/Actual vs Predicted plot.png", caption="Actual vs. Predicted Prices")
+    st.markdown("""
+    <b>Interpretation:</b><br>
+    - Each dot shows a house: x = actual sale price, y = predicted price.<br>
+    - The blue line shows ideal fit (perfect prediction).<br>
+    - Most points closely follow the line, showing the model is accurate for the majority of cases.<br>
+    - Some spread at high prices indicates a typical MAE of about {mae} (see next pages for full metrics).
+    """.format(mae=inr_usd_fmt(700000)), unsafe_allow_html=True)
     currency_note()
     mit_footer()
 
@@ -93,8 +108,26 @@ elif page == "Data Exploration":
     st.markdown("Preview the data and check key visualizations:")
     st.dataframe(pd.read_csv("Housing.csv").head(10))
     st.image("images/RegressionModel-MetricsPerformance.png", caption="Regression Model Metrics")
+    st.markdown("""
+    <b>Interpretation:</b><br>
+    - See R², MAE, and MSE for each model (on test set).<br>
+    - **Gradient Boosting** gives the lowest error and highest R².<br>
+    - Error is measured in ₹/$. Higher R² means better prediction.
+    """, unsafe_allow_html=True)
     st.image("images/Histogram-ResidualDistribution.png", caption="Residuals Distribution")
+    st.markdown("""
+    <b>Interpretation:</b><br>
+    - Shows difference between predicted and actual price.<br>
+    - Centered around zero, suggesting unbiased predictions.<br>
+    - Symmetric, bell-shaped curve indicates no major outliers or bias.
+    """, unsafe_allow_html=True)
     st.image("images/shap_summary_gbr.png", caption="SHAP Summary: Gradient Boosting")
+    st.markdown("""
+    <b>Interpretation:</b><br>
+    - Top features: area, bathrooms, air conditioning, stories, parking.<br>
+    - Blue/red colors show whether feature increases/decreases price.<br>
+    - Larger values on right have strongest effect on raising predicted price.
+    """, unsafe_allow_html=True)
     currency_note()
     mit_footer()
 
@@ -104,24 +137,14 @@ elif page == "Predict & Test":
     st.write("Choose a model and test with our sample or upload your own data!")
 
     with st.expander("ℹ️ Model Results & Metrics (from our Jupyter analysis)"):
-        st.markdown(f"""
-        - **Gradient Boosting:**  
-            - R²: **0.70**  
-            - MSE: 9.97e+11  
-            - MAE: {inr_usd_fmt(706979)}
-        - **Ridge Regression:**  
-            - R²: 0.70  
-            - MSE: 9.98e+11  
-            - MAE: {inr_usd_fmt(734026)}
-        - **Lasso Regression:**  
-            - R²: 0.69  
-            - MSE: 1.00e+12  
-            - MAE: {inr_usd_fmt(735049)}
-        - **Random Forest:**  
-            - R²: 0.64  
-            - MSE: 1.19e+12  
-            - MAE: {inr_usd_fmt(776471)}
-        """)
+        for name in ["Gradient Boosting", "Ridge Regression", "Lasso Regression", "Random Forest"]:
+            m = MODEL_METRICS[name]
+            st.markdown(
+                f"- **{name}:**  \n"
+                f"    - R²: **{m['r2']:.2f}**  \n"
+                f"    - MSE: {m['mse']:.2e}  \n"
+                f"    - MAE: {inr_usd_fmt(m['mae'])}"
+            )
 
     model_name = st.selectbox("Select model:", list(models.keys()), index=4)
     input_method = st.radio("Input data:", ["Use Demo Sample", "Upload Your CSV"])
@@ -141,7 +164,6 @@ elif page == "Predict & Test":
             input_df = None
 
     if input_df is not None and st.button("Predict!"):
-        # Apply scaling
         input_scaled = scaler.transform(input_df)
         preds = models[model_name].predict(input_scaled)
         input_df['Predicted Price'] = preds.astype(int)
@@ -153,12 +175,13 @@ elif page == "Predict & Test":
             f"Prediction completed! Avg predicted price: ₹{mean_pred:,.0f} / ${mean_pred_usd:,.0f}"
         )
 
-        # Inline results interpretation
+        # Dynamic interpretation per selected model
+        metrics = MODEL_METRICS.get(model_name, {"r2": "N/A", "mae": "N/A"})
         st.markdown(f"""
         **Interpretation:**  
-        - The predicted housing prices reflect the influence of features such as area, number of bathrooms, bedrooms, and amenities.
-        - Based on your input, the typical error margin is {inr_usd_fmt(700000)} (MAE).
-        - This model explains up to 70% of the variance in real housing prices in the test set.
+        - The predicted prices reflect features like area, bathrooms, bedrooms, and amenities.
+        - Based on your selection, the typical error margin is {inr_usd_fmt(metrics['mae'])} (MAE).
+        - This model explains up to {metrics['r2']:.0%} of the variance in housing prices in the test set.
         """)
     currency_note()
     mit_footer()
@@ -169,13 +192,12 @@ elif page == "Explainability (SHAP & LIME)":
     st.markdown("See exactly *why* the model predicts these prices! View SHAP summary or test an individual case.")
 
     st.image("images/shap_summary_gbr.png", caption="SHAP Feature Importance – Gradient Boosting")
-
     st.markdown("""
-    - **Top Drivers:**  
-        - `area`, `bathrooms`, `airconditioning_yes`, `prefarea_yes`, `stories`, `parking`
-    - **SHAP Value Scale:**  
-      Shows how much each feature increases or decreases the predicted price.
-    """)
+    <b>Interpretation:</b><br>
+    - Features like area, bathrooms, AC, stories, parking have most impact.<br>
+    - Blue dots: lower feature value, Red dots: higher feature value.<br>
+    - Farther from zero = greater impact on prediction.<br>
+    """, unsafe_allow_html=True)
 
     with st.expander("🧪 Try SHAP or LIME on Demo Row:"):
         row = DEMO_DF.iloc[[0]]
@@ -183,22 +205,31 @@ elif page == "Explainability (SHAP & LIME)":
         explainer = shap.Explainer(model, DEMO_DF)
         shap_values = explainer(row)
         st.write("Input:", row)
-        shap.plots.waterfall(shap_values[0], max_display=8, show=False)
-        st.pyplot(bbox_inches='tight')
+        fig, ax = plt.subplots()
+        shap.plots.waterfall(shap_values[0], max_display=8, show=False, ax=ax)
+        st.pyplot(fig)
         st.info("Blue = decreases price; Red = increases price")
-
+        st.markdown("""
+        <b>Interpretation:</b><br>
+        - Waterfall plot: Each bar shows how much a feature moves the prediction up or down.<br>
+        - Most influential = area, bathrooms, stories, AC, prefarea.<br>
+        - Explains the model's reasoning for this specific house.<br>
+        """, unsafe_allow_html=True)
         st.markdown("Or see the full HTML LIME output below:")
         with open("lime_rf_example.html", "r", encoding="utf-8") as f:
             html_data = f.read()
             st.components.v1.html(html_data, height=400, scrolling=True)
-
+        st.markdown("""
+        <b>Interpretation (LIME):</b><br>
+        - Bar chart shows positive (orange) and negative (blue) feature contributions.<br>
+        - Useful for showing which features increase or decrease the prediction in plain English.<br>
+        """, unsafe_allow_html=True)
     currency_note()
     mit_footer()
 
 # --- 5. Business Value & Recommendations ---
 elif page == "Business Value & Recommendations":
     st.title("💡 Business Value, Impact & Recommendations")
-
     st.markdown(f"""
     **Business Impact:**  
     - **For Real Estate Companies:**  
@@ -208,7 +239,7 @@ elif page == "Business Value & Recommendations":
     - **Model Performance:**  
       - Up to **70% of housing price variation explained** (R² = 0.70)
       - Error margin of ~{inr_usd_fmt(700000)} (MAE)
-      - Saves up to **$2M+ annually** in mispricing costs for large portfolios (see [Zillow profit loss](https://www.zillowgroup.com/news/))
+      - Saves up to **$2M+ annually** in mispricing costs for large portfolios (see [Zillow iBuyer Loss](https://www.cnbc.com/2022/02/10/zillow-lost-881-million-in-2021-winding-down-its-ibuying-business.html))
     - **Adoption Effect:**  
       - Can reduce overpricing/underpricing errors by >30%, increasing transaction speed and volume.
       - Transparency via SHAP/LIME improves trust and regulatory compliance.
@@ -226,10 +257,10 @@ elif page == "Business Value & Recommendations":
 
     **References:**  
     - [Kaggle: Housing Prices Dataset](https://www.kaggle.com/datasets/yasserh/housing-prices-dataset)
-    - [Zillow iBuying Analysis](https://www.zillowgroup.com/news/)
+    - [Zillow iBuying Analysis (CNBC)](https://www.cnbc.com/2022/02/10/zillow-lost-881-million-in-2021-winding-down-its-ibuying-business.html)
+    - [Zillow Group Official Report](https://investors.zillowgroup.com/news-and-events/news/news-details/2022/Zillow-Group-Reports-Fourth-Quarter-and-Full-Year-2021-Results/default.aspx)
     - [Explainable AI in Housing](https://christophm.github.io/interpretable-ml-book/)
     """)
-
     currency_note()
     mit_footer()
 
