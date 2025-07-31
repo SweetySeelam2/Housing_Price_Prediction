@@ -5,7 +5,7 @@
 
 # 🏠 Housing Price Prediction & Model Explainability App
 
-**A full-scale, production-ready, ML-powered web application for accurate housing price prediction and model explainability, built by [Sweety Seelam](https://www.linkedin.com/in/sweetyrao670/).**
+**A full-scale, production-ready, ML-powered web application for accurate housing price prediction and model explainability**
 
 ---
 
